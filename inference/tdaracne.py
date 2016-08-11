@@ -51,5 +51,5 @@ def run_TDARACNE(rootdir,start_point=None,end_point=None):
 
 if __name__ =='__main__':
     rootdir = "Q:/LCA/data/preprocess_data/06_23/drug_data_fill_blank_by_lastobservation/#1/"
-    adj =  run_TDARACNE(rootdir,start_point=1,end_point=3)
+    adj =  run_TDARACNE(rootdir,start_point=10,end_point=14)
     print adj
