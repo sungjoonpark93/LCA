@@ -1,3 +1,11 @@
 __author__ = 'SungJoonPark'
 
-print range(1,28)
+from graphviz import Digraph
+dot = Digraph(comment='Thre Round Table')
+dot.node('A')
+dot.node('B')
+dot.node('L')
+dot.edges(['AB','AL'])
+dot.edge('B','L')
+print dot.source
+dot.render('test', view=True)

@@ -1,5 +1,6 @@
 __author__ = 'SungJoonPark'
 import rpy2.robjects as robjects
+import pandas as pd
 from rpy2.robjects import pandas2ri
 pandas2ri.activate()
 
@@ -44,8 +45,12 @@ def run_TDARACNE(rootdir,start_point=None,end_point=None):
     min_expression_set = get_minimum_expression_set(mean_df)
     adj = TDARACNE(min_expression_set,11,delta=3,likehood=1.2,norm=2,logarithm=1,thresh=0,ksd=0,tolerance=0.15,plot=False ,dot=False ,adj = True)
 
+    row_names = robjects.conversion.ri2py(robjects.r['rownames'](adj))
+    column_names = robjects.conversion.ri2py(robjects.r['colnames'](adj))
     #convert R matrix data struture to python pandas DataFrame
-    adj = robjects.pandas2ri.ri2py(adj)
+
+    adj = pd.DataFrame(robjects.pandas2ri.ri2py(adj),index=row_names,columns=column_names)
+
     return adj
 
 
