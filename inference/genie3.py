@@ -1,4 +1,4 @@
-__author__ = 'SungJoonPark'
+__author__ = 'WonhoShin'
 
 from sklearn.tree.tree import BaseDecisionTree
 from sklearn.ensemble import RandomForestRegressor, ExtraTreesRegressor
