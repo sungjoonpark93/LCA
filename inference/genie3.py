@@ -533,9 +533,12 @@ def genie3_time_single(TS_data, output_idx, input_idx, tree_method, K, ntrees, h
 
     return vi
 
-def run_GENIE3(rootdir):
+def run_GENIE3(rootdir, med_num = None, start_point = 1, end_point = 20):
+    if not isinstance(med_num, (int, integer)):
+        print "Wrong Medicine #"
+        return
     adj_list = []
-    for i in range(1, 2): #(1,28)
+    for i in [med_num]: #(1,28)
         file = open(rootdir + '/' + str(i) + '.tsv', 'rb')
         data = csv.reader(file, delimiter='\t')
         table = [row for row in data]
@@ -546,8 +549,9 @@ def run_GENIE3(rootdir):
             if j == 0:
                 continue
             TFlist.append(row[0])
-            valTable.append(row[1:])
+            valTable.append(row[start_point:end_point+1])
         print TFlist
+        print valTable
         adj = pd.DataFrame(data=array(zeros((16, 16), dtype=float32)), columns=TFlist, index=TFlist, dtype=float32)
         TS_data = array([array(valTable).T])
 
@@ -560,4 +564,5 @@ def run_GENIE3(rootdir):
 
 if __name__ == '__main__':
     rootdir = 'Q:/LCA/data/preprocess_data/06_23/drug_data_observations_merged_TSV'
-    run_GENIE3(rootdir)
+    #time_point:[1-20]
+    run_GENIE3(rootdir, med_num = 3, start_point = 1, end_point = 20)
