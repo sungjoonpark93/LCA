@@ -1,44 +1,44 @@
 __author__ = 'SungJoonPark'
 import pandas as pd
-from graphviz import Digraph
+import graphviz as gv
+import arrange
+import base
+import priorknowledge.berexapi as berex
+
+def tuple_to_pos(node_tuple):
+    return str(node_tuple[0])+","+str(node_tuple[1])+"!"
 
 
-list1 = [1,2,3,4]
-list2 = ['a','b','c']
-list3 = ['10','20']
+def visualize(adj,node_position, outputfile_name=None):
+    g = gv.Digraph(engine='neato',format='png')
 
-graph = Digraph(format='pdf')
-subgraph1 = Digraph()
-subgraph2 = Digraph()
-subgraph3 = Digraph()
+    #put node information in graph object
+    for node in node_position.keys():
+        g.node(node,pos=tuple_to_pos(node_position[node]))
 
-for x in list1:
-    subgraph1.node(str(x))
-for x in list2:
-    subgraph2.node(str(x))
+    #put edge information in graph object
+    #first, from inference
+    edge_list = base.get_edge_list_from_adj(adj)
+    for edge in edge_list:
+        g.edge(edge[0],edge[1])
 
-for x in list3:
-    subgraph3.node(x)
+    #second, from berex
+    #get berex edge from infrence edge list
+    berex_edge_list = berex.berexresult_to_edgelist(berex.egdelist_to_brexquery(edge_list))
+    print berex_edge_list
 
-subgraph1.graph_attr['rank']='same'
-subgraph2.graph_attr['rank']='same'
-subgraph3.graph_attr['rank']='same'
+    #arrow shaping
 
+    #node coloring
 
-graph.graph_attr['rankdir']='TB'
-graph.subgraph(subgraph1)
-graph.subgraph(subgraph2)
-graph.subgraph(subgraph3)
+    g.render(filename="result/temp",view=False)
 
-graph.edge('1','a')
-graph.edge('c','3')
-graph.edge('10','1')
+if __name__ =='__main__':
+    adj1 = pd.DataFrame([[0,0,1,0],[1,0,0,0],[0,0,0,0],[0,0,0,0]],index=['a','b','c','d'],columns=['a','b','c','d'])
+    adj2 = pd.DataFrame([[0,0,0,1],[0,0,1,0],[1,0,0,0],[0,0,1,0]],index=['a','b','c','d'],columns=['a','b','c','d'])
+    adj3 = pd.DataFrame([[0,0,1,0],[0,0,0,1],[1,0,0,0],[1,0,0,0]],index=['a','b','c','d'],columns=['a','b','c','d'])
+    adj4 = pd.DataFrame([[0,0,0,1],[1,0,0,0],[0,1,0,0],[1,0,0,0]],index=['a','b','c','d'],columns=['a','b','c','d'])
 
-
-
-graph.view()
-
-
-
-
-
+    adj_list = [adj1, adj2, adj3, adj4]
+    node_position = arrange.arragne_node_position(adj_list)
+    visualize(adj_list[0], node_position)
