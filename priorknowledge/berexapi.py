@@ -47,6 +47,15 @@ def get_berexedges(gene_pairs = None):
 
     return valid_pairs
 
+
+def egdelist_to_brexquery(edge_list):
+    #edge list is consist of edge tuple
+    return [{'source':edge[0],'target':edge[1]} for edge in edge_list]
+
+
+def berexresult_to_edgelist(berex_result):
+    return [(result['source'],result['target'])  for result in berex_result]
+
 if __name__ == "__main__":
     npairs = [{'source':'BRAF', 'target': 'KRAS'}, {'source':'KRAS', 'target': 'BRAF'}, {'source':'EGFR', 'target': 'KRAS'}]
     print npairs
