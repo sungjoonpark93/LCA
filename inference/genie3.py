@@ -533,7 +533,17 @@ def genie3_time_single(TS_data, output_idx, input_idx, tree_method, K, ntrees, h
 
     return vi
 
-def run_GENIE3(rootdir, med_num = None, start_point = 1, end_point = 20):
+def cutoff_by_threshold(TFlist, _adj, threshold):
+    adj = pd.DataFrame(data=array(zeros((len(TFlist), len(TFlist)), dtype=float32)), columns=TFlist, index=TFlist, dtype=int)
+    for tf1 in TFlist:
+        for tf2 in TFlist:
+            if _adj[tf1][tf2] >= threshold:
+                adj[tf1][tf2] = 1
+            else:
+                adj[tf1][tf2] = 0
+    return adj
+
+def run_GENIE3(rootdir, med_num = None, start_point = 1, end_point = 20, threshold = 0.05):
     if not isinstance(med_num, (int, integer)):
         print "Wrong Medicine #"
         return
@@ -550,19 +560,23 @@ def run_GENIE3(rootdir, med_num = None, start_point = 1, end_point = 20):
                 continue
             TFlist.append(row[0])
             valTable.append(row[start_point:end_point+1])
-        print TFlist
-        print valTable
-        adj = pd.DataFrame(data=array(zeros((16, 16), dtype=float32)), columns=TFlist, index=TFlist, dtype=float32)
+        #print TFlist
+        #print valTable
+        _adj = pd.DataFrame(data=array(zeros((len(TFlist), len(TFlist)), dtype=float32)), columns=TFlist, index=TFlist, dtype=float32)
         TS_data = array([array(valTable).T])
 
         VIM = genie3_time(TS_data, gene_names=TFlist, regulators=TFlist, medicine_number=i)
 
         # Get the ranking of network edges
-        get_link_list(VIM, adj=adj)
+        get_link_list(VIM, adj=_adj)
+
+        adj = cutoff_by_threshold(TFlist, _adj, threshold)
+
         adj_list.append(adj)
-        print adj
+        return adj
 
 if __name__ == '__main__':
     rootdir = 'Q:/LCA/data/preprocess_data/06_23/drug_data_observations_merged_TSV'
     #time_point:[1-20]
-    run_GENIE3(rootdir, med_num = 3, start_point = 1, end_point = 20)
+    adj = run_GENIE3(rootdir, med_num = 1, start_point = 1, end_point = 20, threshold = 0.1)
+    print adj

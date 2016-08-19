@@ -31,18 +31,19 @@ def get_berexedges(gene_pairs = None):
 
 
     for g in gene_pairs:
-
         try:
             g1 = pref[g['source']]
             g2 = pref[g['target']]
         except:
             continue
 
+        allowed_db = ['kegg pathway', 'pathwayapi']
         if g1 + g2 in edges:
             for e in edges[g1 + g2]:
                 g['interaction'] = e['interaction']
                 g['dbsource'] = e['dbsource']
-                valid_pairs.append(g)
+                if g['dbsource'] in allowed_db:
+                    valid_pairs.append(g)
 
     return valid_pairs
 
