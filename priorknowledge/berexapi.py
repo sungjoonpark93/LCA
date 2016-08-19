@@ -51,6 +51,7 @@ def egdelist_to_brexquery(edge_list):
     #edge list is consist of edge tuple
     return [{'source':edge[0],'target':edge[1]} for edge in edge_list]
 
+
 def berexresult_to_edgelist(berex_result):
     return [(result['source'],result['target'])  for result in berex_result]
 
