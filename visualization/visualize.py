@@ -16,22 +16,25 @@ def visualize(adj,node_position, outputfile_name=None):
     for node in node_position.keys():
         g.node(node,pos=tuple_to_pos(node_position[node]))
 
-    #put edge information in graph object
-    #first, from inference
-    edge_list = base.get_edge_list_from_adj(adj)
-    for edge in edge_list:
+    #get edge information
+    inference_edge_list = base.get_edge_list_from_adj(adj)
+    berex_edge_list = berex.berexresult_to_edgelist(berex.get_berexedges(berex.egdelist_to_brexquery(inference_edge_list)))
+
+    only_inference_edge_list=list(set(inference_edge_list).difference(set(berex_edge_list)))
+    both_edge_list = berex_edge_list
+
+    #put edge information to graphic object
+    #only inference edges
+    for edge in only_inference_edge_list:
         g.edge(edge[0],edge[1])
+    #both edges
+    for edge in both_edge_list:
+        g.edge(edge[0],edge[1],style='bold')
 
-    #second, from berex
-    #get berex edge from infrence edge list
-    berex_edge_list = berex.berexresult_to_edgelist(berex.egdelist_to_brexquery(edge_list))
-    print berex_edge_list
-
-    #arrow shaping
 
     #node coloring
 
-    g.render(filename="result/temp",view=False)
+    g.render(filename=outputfile_name,view=False)
 
 if __name__ =='__main__':
     adj1 = pd.DataFrame([[0,0,1,0],[1,0,0,0],[0,0,0,0],[0,0,0,0]],index=['a','b','c','d'],columns=['a','b','c','d'])
@@ -41,4 +44,5 @@ if __name__ =='__main__':
 
     adj_list = [adj1, adj2, adj3, adj4]
     node_position = arrange.arragne_node_position(adj_list)
-    visualize(adj_list[0], node_position)
+    visualize(adj_list[0], node_position,outputfile_name="./result/temp1")
+    #visualize(adj_list[1], node_position,outputfile_name="./result/temp2")
