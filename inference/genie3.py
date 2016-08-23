@@ -550,11 +550,14 @@ def cutoff_by_percentage(TFlist, _adj, threshold):
         for tf2 in TFlist:
             edge_list.append([tf1, tf2, _adj[tf1][tf2]])
 
-
-
+    edge_list = sorted(edge_list, key=lambda k: -k[2])
+    for i in range(int(threshold * len(edge_list))):
+        tf1 = edge_list[i][0]
+        tf2 = edge_list[i][1]
+        adj[tf1][tf2] = 1
     return adj
 
-def run_GENIE3(rootdir, med_num = None, start_point = 1, end_point = 20, threshold = 0.05):
+def run_GENIE3(rootdir, med_num = None, start_point = 1, end_point = 20, cutoff='realvalue', threshold = 0.05):
     if not isinstance(med_num, (int, integer)):
         print "Wrong Medicine #"
         return
@@ -581,7 +584,11 @@ def run_GENIE3(rootdir, med_num = None, start_point = 1, end_point = 20, thresho
         # Get the ranking of network edges
         get_link_list(VIM, adj=_adj)
 
-        adj = cutoff_by_threshold(TFlist, _adj, threshold)
+        adj = None
+        if cutoff == 'realvalue':
+            adj = cutoff_by_threshold(TFlist, _adj, threshold)
+        elif cutoff == 'percentage':
+            adj = cutoff_by_percentage(TFlist, _adj, threshold)
 
         adj_list.append(adj)
         return adj
@@ -589,5 +596,5 @@ def run_GENIE3(rootdir, med_num = None, start_point = 1, end_point = 20, thresho
 if __name__ == '__main__':
     rootdir = 'Q:/LCA/data/preprocess_data/06_23/drug_data_observations_merged_TSV'
     #time_point:[1-20]
-    adj = run_GENIE3(rootdir, med_num = 1, start_point = 1, end_point = 20, threshold = 0.1)
+    adj = run_GENIE3(rootdir, med_num = 1, start_point = 1, end_point = 20, cutoff='percentage', threshold = 0.1)
     print adj

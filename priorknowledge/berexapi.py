@@ -5,13 +5,16 @@ import pandas as pd
 
 def get_berexedges(gene_pairs = None):
     if gene_pairs == None:
-        return
+        return []
     valid_pairs = []
     gene_set = []
     for g in gene_pairs:
         gene_set.append(g['source'])
         gene_set.append(g['target'])
     gene_set = list(set(gene_set))
+
+    if len(gene_set) == 0:
+        return []
 
     r = requests.get('http://iberex.korea.ac.kr/api/server.php?query=' + '@@'.join(gene_set) + '&mode=1')
     try:
