@@ -26,10 +26,10 @@ def visualize(adj,node_position, outputfile_name=None):
     #put edge information to graphic object
     #only inference edges
     for edge in only_inference_edge_list:
-        g.edge(edge[0],edge[1])
+        g.edge(edge[0],edge[1],style='dashed')
     #both edges
     for edge in both_edge_list:
-        g.edge(edge[0],edge[1],style='bold')
+        g.edge(edge[0],edge[1])
 
 
     #node coloring
