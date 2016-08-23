@@ -14,7 +14,12 @@ def get_berexedges(gene_pairs = None):
     gene_set = list(set(gene_set))
 
     r = requests.get('http://iberex.korea.ac.kr/api/server.php?query=' + '@@'.join(gene_set) + '&mode=1')
-    _json = r.json(strict=False)['data']
+    try:
+        _json = r.json(strict=False)['data']
+    except :
+        print "invalid berex query, empty list will be returned"
+        return []
+
     _nodes = _json['nodes']
     _edges = _json['edges']
     edges = {}

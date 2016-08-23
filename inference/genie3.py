@@ -543,6 +543,17 @@ def cutoff_by_threshold(TFlist, _adj, threshold):
                 adj[tf1][tf2] = 0
     return adj
 
+def cutoff_by_percentage(TFlist, _adj, threshold):
+    adj = pd.DataFrame(data=array(zeros((len(TFlist), len(TFlist)), dtype=float32)), columns=TFlist, index=TFlist, dtype=int)
+    edge_list = []
+    for tf1 in TFlist:
+        for tf2 in TFlist:
+            edge_list.append([tf1, tf2, _adj[tf1][tf2]])
+
+
+
+    return adj
+
 def run_GENIE3(rootdir, med_num = None, start_point = 1, end_point = 20, threshold = 0.05):
     if not isinstance(med_num, (int, integer)):
         print "Wrong Medicine #"
