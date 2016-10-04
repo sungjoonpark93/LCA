@@ -7,6 +7,7 @@ import inference.tdaracne as td
 import visualization.visualize as gviz
 import visualization.arrange as arrange
 
+
 def visualize_genie3_inferenced_res(drug_id=None, start_point = 1, end_point = 20, period = 3, threshold=0.05, overlapping=False):
     s = start_point
     adj_list = []
