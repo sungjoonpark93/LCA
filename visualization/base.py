@@ -16,6 +16,8 @@ def split_list_by_chunk_num(list_, chunk_num):
             splited_list.append(list_[bin*(chunk-1):(bin*(chunk-1))+bin])
     return splited_list
 
+
+
 def get_edge_list_from_adj(adj):
     #get adj matrix and return edge list as list of tuple
     #e.g return [('a','a'),('b','a')]
