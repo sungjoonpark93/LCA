@@ -3,8 +3,8 @@ __author__ = 'SungJoonPark'
 import pandas as pd
 import random
 
-max_x_pos = 10.0
-max_y_pos = 10.0
+max_x_pos = 5.0
+max_y_pos = 5.0
 
 def get_first_order_node_position(first_adj,node_position):
     first_effected_edges = list(first_adj[first_adj==1].stack().index)

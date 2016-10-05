@@ -57,5 +57,5 @@ def visualize_tdaracne_inferenced_res(drug_id=None, start_point = 1, end_point =
 
 if __name__ == '__main__':
     for drug_id in range(1,2):
-        visualize_genie3_inferenced_res(drug_id = drug_id, start_point = 1, end_point = 20, threshold=0.03, period=4, overlapping=True)
+        #visualize_genie3_inferenced_res(drug_id = drug_id, start_point = 1, end_point = 20, threshold=0.03, period=4, overlapping=True)
         visualize_tdaracne_inferenced_res(drug_id = drug_id, start_point = 1, end_point = 20, period=4, overlapping=True)
