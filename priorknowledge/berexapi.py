@@ -37,7 +37,6 @@ def get_berexedges(gene_pairs = None):
             _e[attr] = e[attr]
         edges[e['source'] + e['target']].append(_e)
 
-
     for g in gene_pairs:
         try:
             g1 = pref[g['source']]
@@ -45,9 +44,16 @@ def get_berexedges(gene_pairs = None):
         except:
             continue
 
-        allowed_db = ['kegg pathway', 'pathwayapi']
+        allowed_db = ['kegg pathway', 'pathwayapi', 'HPRD']
         if g1 + g2 in edges:
             for e in edges[g1 + g2]:
+                g['interaction'] = e['interaction']
+                g['dbsource'] = e['dbsource']
+                if True: #g['dbsource'] in allowed_db
+                    valid_pairs.append(g)
+
+        if g2 + g1 in edges:
+            for e in edges[g2 + g1]:
                 g['interaction'] = e['interaction']
                 g['dbsource'] = e['dbsource']
                 if g['dbsource'] in allowed_db:
@@ -65,7 +71,7 @@ def berexresult_to_edgelist(berex_result):
     return [(result['source'],result['target'])  for result in berex_result]
 
 if __name__ == "__main__":
-    npairs = [{'source':'BRAF', 'target': 'KRAS'}, {'source':'KRAS', 'target': 'BRAF'}, {'source':'EGFR', 'target': 'KRAS'}]
-    print npairs
+    #npairs = [{'source':'BRAF', 'target': 'KRAS'}, {'source':'KRAS', 'target': 'BRAF'}, {'source':'EGFR', 'target': 'KRAS'}]
+    npairs = [{'source': 'ap2', 'target': 'ap4'}]
     valid_pairs = get_berexedges(npairs)
     print valid_pairs
