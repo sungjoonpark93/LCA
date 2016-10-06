@@ -10,7 +10,7 @@ def tuple_to_pos(node_tuple):
 
 
 def visualize(adj,node_position, outputfile_name=None):
-    g = gv.Digraph(engine='neato',format='pdf')
+    g = gv.Digraph(engine='neato',format='png')
     g.graph_attr['overlap']='false'
     g.graph_attr['splines'] = 'true'
     g.graph_attr['size']='10'
