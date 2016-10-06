@@ -13,7 +13,8 @@ def visualize(adj,node_position, outputfile_name=None):
     g = gv.Digraph(engine='neato',format='png')
     g.graph_attr['overlap']='false'
     g.graph_attr['splines'] = 'true'
-    g.graph_attr['size']='10'
+    #g.graph_attr['inputscale'] = '5'
+    #g.graph_attr['size']='30!'
     #g.graph_attr['ratio'] = 'expand'
     #put node information in graph object
     for node in node_position.keys():
