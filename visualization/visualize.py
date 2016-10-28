@@ -9,16 +9,21 @@ def tuple_to_pos(node_tuple):
     return str(node_tuple[0])+","+str(node_tuple[1])+"!"
 
 
-def visualize(adj,node_position, outputfile_name=None):
+def visualize(adj,node_position, fill_info, outputfile_name=None):
     g = gv.Digraph(engine='neato',format='png')
     g.graph_attr['overlap']='false'
     g.graph_attr['splines'] = 'true'
+    #g.graph_attr['sep'] = '1'
+    #g.graph_attr['esep'] = '0.7'
+    #g.graph_attr['splines'] = 'ortho'
     #g.graph_attr['inputscale'] = '5'
     #g.graph_attr['size']='30!'
     #g.graph_attr['ratio'] = 'expand'
     #put node information in graph object
+    print node_position
+    print fill_info
     for node in node_position.keys():
-        g.node(node,pos=tuple_to_pos(node_position[node]))
+        g.node(node,pos=tuple_to_pos(node_position[node]), style="filled", color=fill_info[node])
 
     #get edge information
     inference_edge_list = base.get_edge_list_from_adj(adj)
@@ -28,7 +33,7 @@ def visualize(adj,node_position, outputfile_name=None):
     both_edge_list = berex_edge_list
 
     #put edge information to graphic object
-    #only inference edges
+    #only inference
     for edge in only_inference_edge_list:
         g.edge(edge[0],edge[1],style='dashed')
     #both edges

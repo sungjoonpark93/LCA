@@ -438,7 +438,7 @@ def genie3_time(TS_data, gene_names=None, medicine_number=None, regulators='all'
 
     for i in range(ngenes):
         if medicine_number != None:
-            print 'Medicine #%d: Gene %d...' % (medicine_number, i + 1)
+            print 'Medicine #%s: Gene %d...' % (medicine_number, i + 1)
         else:
             print 'Gene %d...' % (i + 1)
 
@@ -558,9 +558,9 @@ def cutoff_by_percentage(TFlist, _adj, threshold):
     return adj
 
 def run_GENIE3(rootdir, med_num = None, start_point = 1, end_point = 20, cutoff='realvalue', threshold = 0.05):
-    if not isinstance(med_num, (int, integer)):
-        print "Wrong Medicine #"
-        return
+    # if not isinstance(med_num, (int, integer)):
+    #     print "Wrong Medicine #"
+    #     return
     adj_list = []
     for i in [med_num]: #(1,28)
         file = open(rootdir + '/' + str(i) + '.tsv', 'rb')

@@ -4,7 +4,7 @@ import pandas as pd
 import random
 
 max_x_pos = 10.0
-max_y_pos = 10.0
+max_y_pos = 30.0
 
 def get_first_order_node_position(first_adj,node_position):
     first_effected_edges = list(first_adj[first_adj==1].stack().index)
@@ -28,9 +28,34 @@ def get_first_order_node_position(first_adj,node_position):
 
 
 def get_remaining_node_position(remaining_nodes, node_position):
+    layout_grid_rowlen = 3
+    layout_grid_shift_prop = 0.2
+    pos_num = 0
+    tmp_max_x_pos = 0.0
+    tmp_max_y_pos = 0.0
+    print "REMAIN NODES:"
+    print remaining_nodes
     for remain_node in remaining_nodes:
         if remain_node not in node_position:
-            node_position[remain_node] = (random.uniform(1,8), random.uniform(0,6))
+            if random.random() < layout_grid_shift_prop:
+                pos_num += 1
+            grid_y = int(pos_num / float(layout_grid_rowlen)) + 1
+            grid_x = pos_num % layout_grid_rowlen
+            #print remain_node,"(",grid_x,", ",grid_y,")"
+            node_position[remain_node] = (random.uniform(grid_x, grid_x + 0.2), random.uniform(grid_y, grid_y + 0.2))
+            #node_position[remain_node] = (grid_x, grid_y)
+            pos_num += 1
+        if tmp_max_x_pos < node_position[remain_node][0]:
+            tmp_max_x_pos = node_position[remain_node][0]
+        if tmp_max_y_pos < node_position[remain_node][1]:
+            tmp_max_y_pos = node_position[remain_node][1]
+
+    for remain_node in remaining_nodes:
+        tmp_x, tmp_y = node_position[remain_node]
+        tmp_x = tmp_x / tmp_max_x_pos * max_x_pos
+        tmp_y = tmp_y / tmp_max_y_pos * (max_y_pos - 4.5)
+        node_position[remain_node] = (tmp_x, tmp_y)
+
     return node_position
 
 

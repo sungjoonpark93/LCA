@@ -21,9 +21,9 @@ def preprocess_rawdata0623(inputfile,outputdir):
             outputfile=sheet_dir+"/"+str((i/3)+1)+".csv"
             df[sheet].iloc[:,i:i+3].T.to_csv(outputfile,index=False)
 
-
-
 if __name__ == '__main__':
     rawdata0623_file = "Q:/LCA/data/raw data/drug_data_0623_fillblanck_with_day3.xlsx"
+    rawdata0810_file = "Q:/LCA/data/raw data/drug_data_0810_fillblank.xlsx"
     outputdir = "./temp"
-    preprocess_rawdata0623(rawdata0623_file,outputdir)
+    #preprocess_rawdata0623(rawdata0623_file,outputdir)
+    preprocess_rawdata0623(rawdata0810_file,outputdir)
